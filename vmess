@@ -22,7 +22,7 @@ done
 echo -e "Creating Vmess Account $region, Wait...\n"
 r=$(curl -s "$url/free-vmessWS-$region-server" \
   -H 'Content-Type: application/x-www-form-urlencoded' \
-  -d 'nameser=singapore&id_server=200&ipserver=192.46.230.117&proov=vmessWS&datecreated=2021-06-15&endcreated=2021-06-18&g-recaptcha-response=03AGdBq26Y42S0b5OtCEc5MfP0rqq-QqSYDs4kNjMu2ii0JwrFwAn_uSlsNOYw0uF59pkj00Ub-vD2QxhcP1DO1E1Ht1NEaAz9LB-aYsP6NJkSbYcxwmIkQd4ZrNx3qL7Vfcfx50v1M2o_idMSw4ggHiv8X3DO6ST2dbH6xN6-4LZF6lwr-2EdeTnGFEQhPL3rQSpUdvpVpxgm-YcuBUL175xdvo-Rk3Nasxwm9Lhrkuk9Elwf11yR8MhG46_5szBXTVc9Tf1a38Gf5WBgQf60OnFN8aa0r5QK5NddLiM9Vbpq1QcwGEQQbyJS-hYbkjqjpBXtGuO5cuirS4fLQll51T6Qu615Uy4gXlgUXyk9kg1NKvptP7WQDZziSSXH_GP2nUQ-XxydbJ4Cqt-FGGXIQ84NHPlxmOR0VeLGvodRqzASjx6WRBugKYN7d_Oq-cV8qOg1E9GwqUi4&submit=')
+  -d 'nameser=ryanfauzi&id_server=11&ipserver=&proov=vmessWS&datecreated=&endcreated=&g-recaptcha-response=asu&submit=')
 decode=$(echo $r|awk -F 'vmess://' '{print $2}'|awk -F "'" '{print $1}'|base64 -d)
 add=$(echo $decode|awk -F 'add":"' '{print $2}'|awk -F '"' '{print $1}');addn=$(timeout 2 ping $add -c1|awk "NR==1"|awk -F "(" '{print $2}'|awk -F ')' '{print $1}')
 host=$(echo $decode|awk -F 'host":"' '{print $2}'|awk -F '"' '{print $1}');hostn=$(timeout 2 ping $host -c1|awk "NR==1"|awk -F "(" '{print $2}'|awk -F ')' '{print $1}')
