@@ -1,0 +1,47 @@
+#!/bin/bash
+#codedbyryan
+url="https://www.racevpn.com"
+while true; do
+clear;echo "VMESS WS OPENWRT + AUTO CHANGE HOST TO IP"
+echo -e "\n Silahkan pilih Server Lokasi (no): \n###################################\n  (1). singapore\n  (2). india\n  (3). netherlands\n  (4). unitedstates\n  (5). unitedkingdom\n";read -p "Pilihan: " n
+ if [ -f $n ]; then
+continue
+ fi
+  if [ $n -eq 1 ]; then
+region=singapore;break
+elif [ $n -eq 2 ]; then
+region=india;break
+elif [ $n -eq 3 ]; then
+region=netherlands;break
+elif [ $n -eq 4 ]; then
+region=unitedstates;break
+elif [ $n -eq 5 ]; then
+region=unitedkingdom;break
+  fi
+done
+echo -e "Creating Vmess Account $region, Wait...\n"
+r=$(curl -s "$url/free-vmessWS-$region-server" \
+  -H 'Connection: keep-alive' \
+  -H 'Cache-Control: max-age=0' \
+  -H 'sec-ch-ua: " Not;A Brand";v="99", "Google Chrome";v="91", "Chromium";v="91"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'Upgrade-Insecure-Requests: 1' \
+  -H 'Origin: https://www.racevpn.com' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.106 Safari/537.36' \
+  -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9' \
+  -H 'Sec-Fetch-Site: same-origin' \
+  -H 'Sec-Fetch-Mode: navigate' \
+  -H 'Sec-Fetch-User: ?1' \
+  -H 'Sec-Fetch-Dest: document' \
+  -H 'Referer: https://www.racevpn.com/free-vmessWS-singapore-server' \
+  -H 'Accept-Language: en-US,en;q=0.9,id;q=0.8' \
+  -H 'Cookie: __gads=ID=2a89fcce08a04a65-2212e22082c9007f:T=1623761291:RT=1623761291:S=ALNI_MYE57HuoMD8PrKzFHDahVjI3lQ3gg; _ga=GA1.2.592048714.1623761353; _gid=GA1.2.49161755.1623761354; _gat_gtag_UA_165434148_1=1' \
+  -d 'nameser=singapore&id_server=200&ipserver=192.46.230.117&proov=vmessWS&datecreated=2021-06-15&endcreated=2021-06-18&g-recaptcha-response=03AGdBq26Y42S0b5OtCEc5MfP0rqq-QqSYDs4kNjMu2ii0JwrFwAn_uSlsNOYw0uF59pkj00Ub-vD2QxhcP1DO1E1Ht1NEaAz9LB-aYsP6NJkSbYcxwmIkQd4ZrNx3qL7Vfcfx50v1M2o_idMSw4ggHiv8X3DO6ST2dbH6xN6-4LZF6lwr-2EdeTnGFEQhPL3rQSpUdvpVpxgm-YcuBUL175xdvo-Rk3Nasxwm9Lhrkuk9Elwf11yR8MhG46_5szBXTVc9Tf1a38Gf5WBgQf60OnFN8aa0r5QK5NddLiM9Vbpq1QcwGEQQbyJS-hYbkjqjpBXtGuO5cuirS4fLQll51T6Qu615Uy4gXlgUXyk9kg1NKvptP7WQDZziSSXH_GP2nUQ-XxydbJ4Cqt-FGGXIQ84NHPlxmOR0VeLGvodRqzASjx6WRBugKYN7d_Oq-cV8qOg1E9GwqUi4&submit=')
+decode=$(echo $r|awk -F 'vmess://' '{print $2}'|awk -F "'" '{print $1}'|base64 -d)
+add=$(echo $decode|awk -F 'add":"' '{print $2}'|awk -F '"' '{print $1}');addn=$(timeout 2 ping $add -c1|awk "NR==1"|awk -F "(" '{print $2}'|awk -F ')' '{print $1}')
+host=$(echo $decode|awk -F 'host":"' '{print $2}'|awk -F '"' '{print $1}');hostn=$(timeout 2 ping $host -c1|awk "NR==1"|awk -F "(" '{print $2}'|awk -F ')' '{print $1}')
+echo "###############################################"
+echo "vmess://$(echo $decode|sed "s/$add/$addn/g"|sed "s/$host/$hostn/g"|base64|sed ':a;N;$!ba;s/\n//g')"
+echo "###############################################"
+echo -e "Expired On: $(echo $r|awk -F 'The account will be replaced on ' '{print $3}'|awk -F '<' '{print $1}')\n"
