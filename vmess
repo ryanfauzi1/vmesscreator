@@ -3,7 +3,7 @@
 url="https://www.racevpn.com"
 while true; do
 clear;echo "VMESS WS OPENWRT + AUTO CHANGE HOST TO IP"
-echo -e "\n Silahkan pilih Server Lokasi (no): \n###################################\n  (1). singapore\n  (2). india\n  (3). netherlands\n  (4). unitedstates\n  (5). unitedkingdom\n";read -p "Pilihan: " n
+echo -e "\n Silahkan pilih Server Lokasi (no): \n###################################\n  (1). singapore\n  (2). india\n  (3). netherlands\n  (4). unitedstates\n  (5). unitedkingdom\n  (6). Exit\n";read -p "Pilihan: " n
  if [ -f $n ]; then
 continue
  fi
@@ -17,6 +17,8 @@ elif [ $n -eq 4 ]; then
 region=unitedstates;break
 elif [ $n -eq 5 ]; then
 region=unitedkingdom;break
+elif [ $n -eq 6 ]; then
+exit
   fi
 done
 echo -e "Creating Vmess Account $region, Wait...\n"
