@@ -1,4 +1,4 @@
-# vmesscreator
+# vmesscreator v2
 for simple create vmessWS accounts
 
 #installer
