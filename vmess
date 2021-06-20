@@ -1,0 +1,37 @@
+#!/bin/bash
+#codedbyryan
+url="https://www.racevpn.com"
+while true; do
+clear;echo "VMESS WS OPENWRT + AUTO CHANGE HOST TO IP"
+echo -e "\n Silahkan pilih Server Lokasi (no): \n###################################\n  (1). singapore\n  (2). india\n  (3). netherlands\n  (4). unitedstates\n  (5). unitedkingdom\n  (6). japan\n  (7). german\n  (8). Exit\n";read -p "Pilihan: " n
+ if [ -f $n ]; then
+continue
+ fi
+  if [ $n -eq 1 ]; then
+region=singapore;break
+elif [ $n -eq 2 ]; then
+region=india;break
+elif [ $n -eq 3 ]; then
+region=netherlands;break
+elif [ $n -eq 4 ]; then
+region=unitedstates;break
+elif [ $n -eq 5 ]; then
+region=unitedkingdom;break
+elif [ $n -eq 6 ]; then
+region=japan;break
+elif [ $n -eq 7 ]; then
+region=german;break
+elif [ $n -eq 8 ]; then
+exit
+  fi
+done
+echo -e "Creating Vmess Account $region, Wait...\n"
+r=$(curl -s "$url/free-vmesswebsockets-$region-server" \
+  -d 'idsession=ryanfauzi&nameser=ganteng&id_server=11&ipserver=&proov=vmess&datecreated=&endcreated=&firstNumber=1&secondNumber=1&captchaResult=2&submit=')
+decode=$(echo $r|awk -F 'vmess://' '{print $2}'|awk -F "'" '{print $1}'|base64 -d)
+add=$(echo $decode|awk -F 'add":"' '{print $2}'|awk -F '"' '{print $1}');addn=$(timeout 2 ping $add -c1|awk "NR==1"|awk -F "(" '{print $2}'|awk -F ')' '{print $1}')
+host=$(echo $decode|awk -F 'host":"' '{print $2}'|awk -F '"' '{print $1}');hostn=$(timeout 2 ping $host -c1|awk "NR==1"|awk -F "(" '{print $2}'|awk -F ')' '{print $1}')
+echo "###############################################"
+echo "vmess://$(echo $decode|sed "s/$add/$addn/g"|sed "s/$host/$hostn/g"|base64|sed ':a;N;$!ba;s/\n//g')"
+echo "###############################################"
+echo -e "Expired On: $(echo $r|awk -F 'The account will be replaced on ' '{print $2}'|awk -F '<' '{print $1}')\n"
